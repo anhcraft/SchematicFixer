@@ -5,16 +5,22 @@ import net.querz.nbt.tag.IntTag;
 import net.querz.nbt.tag.Tag;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Helper {
 
-    public static void scanSign(CompoundTag root) {
+    public static void scanSign(CompoundTag root, Position offset) {
+        if (root.containsKey("Metadata")) {
+            offset = offset.add(Position.of(
+                    root.getCompoundTag("Metadata").getInt("WEOffsetX"),
+                    root.getCompoundTag("Metadata").getInt("WEOffsetY"),
+                    root.getCompoundTag("Metadata").getInt("WEOffsetZ")
+            ));
+        }
         for (Tag<?> t : root.getListTag("BlockEntities")) {
             if (t instanceof CompoundTag tag && tag.getString("Id").contains("sign")) {
-                System.out.println(Arrays.toString(tag.getIntArrayTag("Pos").getValue()));
+                System.out.println(Position.of(tag.getIntArrayTag("Pos").getValue()).add(offset));
                 System.out.println("- " + tag.getString("Text1"));
                 System.out.println("- " + tag.getString("Text2"));
                 System.out.println("- " + tag.getString("Text3"));

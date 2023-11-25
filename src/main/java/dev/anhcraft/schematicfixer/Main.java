@@ -10,10 +10,16 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("Reading schematic file...");
-        var root = (CompoundTag) NBTUtil.read("CrimsonCastle.schem").getTag();
-        //Helper.scanSign(root);
+        var root = (CompoundTag) NBTUtil.read("Example.schem").getTag();
+
+        //Scan sign, given offset coordinates
+        //Helper.scanSign(root, Position.of(1993, 1, 1003));
         System.out.println("Parsing schematic data...");
+
+        // Read block data
         var schem = Helper.readBlockData(root, 0, 0, 0);
+
+        // Rewrite materials & try to downgrade version
         schem.replaceMaterial("minecraft:deepslate_brick_wall", "minecraft:stone_brick_wall", true);
         schem.replaceMaterial("minecraft:mud", "minecraft:gray_terracotta", false);
         schem.removeMaterial("minecraft:light");
@@ -40,9 +46,13 @@ public class Main {
         schem.replaceMaterial("minecraft:deepslate_brick_stairs", "minecraft:blackstone_stairs", true);
         schem.replaceMaterial("minecraft:deepslate_bricks", "minecraft:polished_blackstone", false);
         schem.replaceMaterial("minecraft:cobbled_deepslate_slab", "minecraft:polished_blackstone_slab", true);
+
+        // Save schematic data
         System.out.println("Saving schematic data...");
         Helper.writeBlockData(root, schem, 0, 0, 0);
+
+        // Save schematic file
         System.out.println("Writing schematic file...");
-        NBTUtil.write(new NamedTag("Schematic", root), "CrimsonCastle1.schem");
+        NBTUtil.write(new NamedTag("Schematic", root), "Example.schem");
     }
 }

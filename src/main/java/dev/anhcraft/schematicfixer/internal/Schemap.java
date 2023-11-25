@@ -11,7 +11,7 @@ public class Schemap {
 
     static {
         try {
-            for (String s : new String(IOUtil.readResource(Helper.class, "/material-1.16.txt"), StandardCharsets.UTF_8).split("\\n")) {
+            for (String s : new String(IOUtil.readResource(Helper.class, "/materials.txt"), StandardCharsets.UTF_8).split("\\n")) {
                 VALID_MATERIALS.add(s.trim());
             }
         } catch (IOException e) {
